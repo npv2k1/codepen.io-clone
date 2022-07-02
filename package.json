@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy": "npm run build && node ./gh-pages.cjs",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "codemirror": "^5.65.2",
+    "gh-pages": "^4.0.0",
     "monaco-editor": "^0.33.0",
     "svelte-split-pane": "^0.1.2"
   }
