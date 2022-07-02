@@ -1,65 +1,108 @@
-<script lang="ts">
-  import logo from './assets/svelte.png'
-  import Counter from './lib/Counter.svelte'
+<script>
+  import { onMount } from "svelte";
+
+  // import "./lib/codemirror.css";
+  import { HSplitPane, VSplitPane } from "svelte-split-pane";
+  import { loop_guard } from "svelte/internal";
+  import { makePage } from "./build";
+  import Editor from "./Editor.svelte";
+  import "./userWorker.ts";
+  let htmlEditor;
+  let cssEditor;
+  let jsEditor;
+
+  let output = makePage("<h1>Hello</h1>");
+
+  $: {
+    console.log(htmlEditor?.getValue());
+  }
+
+  // // console.log(output);
+  const handleClick = () => {
+    console.log(htmlEditor);
+    console.log("htmlEditor", htmlEditor.getValue());
+  };
+
+  onMount(() => {
+    setInterval(() => {
+      output = makePage(
+        htmlEditor?.getValue(),
+        cssEditor?.getValue(),
+        jsEditor?.getValue()
+      );
+    }, 1000);
+  });
+  let paneRightW;
+  let paneRightH;
+
+  $: {
+    console.log({ paneRight: paneRightW, paneRightH });
+    console.log();
+  }
 </script>
 
-<main class='bg-red-500'>
-  <img src={logo} alt="Svelte Logo" />
-  <h1>Hello Typescript!</h1>
-
-  <Counter />
-
-  <p>
-    Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte
-    apps.
-  </p>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme">SvelteKit</a> for
-    the officially supported framework, also powered by Vite!
-  </p>
+<main>
+  <div class="wrapper">
+    <HSplitPane
+      leftPaneSize="25%"
+      rightPaneSize="75%"
+      minLeftPaneSize="50px"
+      minRightPaneSize="50px"
+      updateCallback={(e) => {
+        // htmlEditor?.layout();
+        // cssEditor?.layout();
+        // jsEditor?.layout();
+      }}
+    >
+      <left slot="left">
+        <VSplitPane>
+          <top slot="top">
+            <Editor language="html" bind:editor={htmlEditor} />
+          </top>
+          <down slot="down">
+            <VSplitPane>
+              <top slot="top">
+                <Editor language="css" bind:editor={cssEditor} />
+              </top>
+              <down slot="down">
+                <Editor language="javascript" bind:editor={jsEditor} />
+              </down>
+            </VSplitPane>
+          </down>
+        </VSplitPane>
+      </left>
+      <right
+        bind:clientWidth={paneRightW}
+        bind:clientHeight={paneRightH}
+        class="bg-gray-200"
+        slot="right"
+      >
+        <iframe
+          title="code"
+          srcDoc={output}
+          class="w-full h-full"
+        />
+      </right>
+    </HSplitPane>
+  </div>
 </main>
 
 <style>
-  :root {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
-
   main {
-    text-align: center;
-    padding: 1em;
     margin: 0 auto;
   }
-
-  img {
-    height: 16rem;
-    width: 16rem;
+  div.wrapper {
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
   }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4rem;
-    font-weight: 100;
-    line-height: 1.1;
-    margin: 2rem auto;
-    max-width: 14rem;
-  }
-
-  p {
-    max-width: 14rem;
-    margin: 1rem auto;
-    line-height: 1.35;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      max-width: none;
-    }
-
-    p {
-      max-width: none;
-    }
+  left,
+  right,
+  top,
+  down {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    /* display: block; */
   }
 </style>

@@ -4,15 +4,23 @@ specifiers:
   '@sveltejs/vite-plugin-svelte': ^1.0.0-next.30
   '@tsconfig/svelte': ^2.0.1
   autoprefixer: ^10.4.2
+  codemirror: ^5.65.2
+  monaco-editor: ^0.33.0
   postcss: ^8.4.5
   postcss-load-config: ^3.1.1
   svelte: ^3.44.0
   svelte-check: ^2.2.7
   svelte-preprocess: ^4.10.1
+  svelte-split-pane: ^0.1.2
   tailwindcss: ^3.0.12
   tslib: ^2.3.1
   typescript: ^4.5.4
   vite: ^2.8.0
+
+dependencies:
+  codemirror: 5.65.2
+  monaco-editor: 0.33.0
+  svelte-split-pane: 0.1.2
 
 devDependencies:
   '@sveltejs/vite-plugin-svelte': 1.0.0-next.39_svelte@3.46.4+vite@2.8.6
@@ -269,6 +277,10 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /codemirror/5.65.2:
+    resolution: {integrity: sha512-SZM4Zq7XEC8Fhroqe3LxbEEX1zUPWH1wMr5zxiBuiUF64iYOUH/JI88v4tBag8MiBS8B8gRv8O1pPXGYXQ4ErA==}
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -793,6 +805,10 @@ packages:
       minimist: 1.2.5
     dev: true
 
+  /monaco-editor/0.33.0:
+    resolution: {integrity: sha512-VcRWPSLIUEgQJQIE0pVT8FcGBIgFoxz7jtqctE+IiCxWugD0DwgyQBcZBhdSrdMC84eumoqMZsGl2GTreOzwqw==}
+    dev: false
+
   /mri/1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -1139,6 +1155,10 @@ packages:
       svelte: 3.46.4
       typescript: 4.6.2
     dev: true
+
+  /svelte-split-pane/0.1.2:
+    resolution: {integrity: sha512-JluEydC9v2DetyhlwCF3CdqAkET8XPHP7WeWbl4lVLOg55avDOhoS5U6BRhvWd104HOqhUcCSz+7Nveyjmzjeg==}
+    dev: false
 
   /svelte/3.46.4:
     resolution: {integrity: sha512-qKJzw6DpA33CIa+C/rGp4AUdSfii0DOTCzj/2YpSKKayw5WGSS624Et9L1nU1k2OVRS9vaENQXp2CVZNU+xvIg==}
