@@ -5,8 +5,12 @@
   import { HSplitPane, VSplitPane } from "svelte-split-pane";
   import { loop_guard } from "svelte/internal";
   import { makePage } from "./build";
+  import { Language } from "./common/enums";
   import Editor from "./Editor.svelte";
   import "./userWorker.ts";
+
+  let languageSelect = Language.HTML;
+
   let htmlEditor;
   let cssEditor;
   let jsEditor;
@@ -15,6 +19,7 @@
 
   $: {
     console.log(htmlEditor?.getValue());
+  
   }
 
   // // console.log(output);
@@ -39,51 +44,91 @@
     console.log({ paneRight: paneRightW, paneRightH });
     console.log();
   }
+
+  const handleSaveFile = () => {};
 </script>
 
 <main>
-  <div class="wrapper">
-    <HSplitPane
-      leftPaneSize="25%"
-      rightPaneSize="75%"
-      minLeftPaneSize="50px"
-      minRightPaneSize="50px"
-      updateCallback={(e) => {
-        // htmlEditor?.layout();
-        // cssEditor?.layout();
-        // jsEditor?.layout();
-      }}
-    >
-      <left slot="left">
-        <VSplitPane>
-          <top slot="top">
-            <Editor language="html" bind:editor={htmlEditor} />
-          </top>
-          <down slot="down">
-            <VSplitPane>
-              <top slot="top">
-                <Editor language="css" bind:editor={cssEditor} />
-              </top>
-              <down slot="down">
-                <Editor language="javascript" bind:editor={jsEditor} />
-              </down>
-            </VSplitPane>
-          </down>
-        </VSplitPane>
-      </left>
-      <right
+  <div class="wrapper flex flex-col">
+    <div class="p-2">
+      <!-- save -->
+      <button
+        class=" bg-blue-300 rounded-xl px-2 py-1 mx-3 border hover:border-blue-700 border-transparent"
+        on:click={handleSaveFile}>Save</button
+      >
+    </div>
+    <div class="flex flex-1">
+      <div class="flex flex-1">
+        <div class="flex flex-1 flex-col">
+          <div>
+            <ul
+              class="hidden text-sm font-medium text-center text-gray-500 rounded-lg divide-x divide-gray-200 shadow sm:flex dark:divide-gray-700 dark:text-gray-400"
+            >
+              <li
+                on:click={() => (languageSelect = Language.HTML)}
+                class="w-full"
+              >
+                <a
+                  href="#"
+                  class={`inline-block p-4 w-full text-gray-900 bg-gray-100  " ${
+                    languageSelect === Language.HTML
+                      ? " border-t-2 border-blue-500"
+                      : ""
+                  }`}
+                  aria-current="page">HTML</a
+                >
+              </li>
+              <li
+                on:click={() => (languageSelect = Language.CSS)}
+                class="w-full"
+              >
+                <a
+                  href="#"
+                  class={`inline-block p-4 w-full text-gray-900 bg-gray-100  " ${
+                    languageSelect === Language.CSS
+                      ? "border-t-2 border-blue-500"
+                      : ""
+                  }`}>CSS</a
+                >
+              </li>
+              <li
+                on:click={() => (languageSelect = Language.JS)}
+                class="w-full"
+              >
+                <a
+                  href="#"
+                  class={`inline-block p-4 w-full text-gray-900 bg-gray-100   " ${
+                    languageSelect === Language.JS
+                      ? "border-t-2 border-blue-500"
+                      : ""
+                  }`}>javascript</a
+                >
+              </li>
+            </ul>
+          </div>
+          {#if languageSelect === Language.HTML}
+            <div class="w-full h-full">
+              <Editor language="html" bind:editor={htmlEditor} />
+            </div>
+          {:else if languageSelect === Language.CSS}
+            <div class="w-full h-full">
+              <Editor language="css" bind:editor={cssEditor} />
+            </div>
+          {:else if languageSelect === Language.JS}
+            <div class="w-full h-full">
+              <Editor language="javascript" bind:editor={jsEditor} />
+            </div>
+          {/if}
+        </div>
+      </div>
+      <div
         bind:clientWidth={paneRightW}
         bind:clientHeight={paneRightH}
-        class="bg-gray-200"
-        slot="right"
+        class="bg-gray-200 flex flex-[2]"
       >
-        <iframe
-          title="code"
-          srcDoc={output}
-          class="w-full h-full"
-        />
-      </right>
-    </HSplitPane>
+        <iframe title="code" srcDoc={output} class="w-full h-full" />
+      </div>
+    </div>
   </div>
 </main>
 
